@@ -5,27 +5,27 @@ const navItems = [
   {
     name: "Home",
     iconClass: ["fas", "house"],
-    navigate: "/",
+    navigate: "/1",
   },
   {
     name: "About",
     iconClass: ["fas", "user"],
-    navigate: "/about",
+    navigate: "/1/about",
   },
   {
     name: "Services",
     iconClass: ["fas", "gear"],
-    navigate: "/services",
+    navigate: "/1/services",
   },
   {
     name: "Portfolio",
     iconClass: ["fas", "briefcase"],
-    navigate: "/portfolio",
+    navigate: "/1/portfolio",
   },
   {
     name: "Contact",
     iconClass: ["fas", "envelope"],
-    navigate: "/contact",
+    navigate: "/1/contact",
   },
 ];
 

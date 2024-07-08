@@ -1,7 +1,10 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+import Layout from "../Components/Layout/Layout";
 import Loading from "../Components/Loading/Loading";
 
+const Signup = lazy(() => import("../Components/Pages/Signup"));
+const Login = lazy(() => import("../Components/Pages/Login"));
 const About = lazy(() => import("../Components/Pages/About"));
 const Home = lazy(() => import("../Components/Pages/Home"));
 const Service = lazy(() => import("../Components/Pages/Service"));
@@ -15,42 +18,66 @@ export default function App() {
         path="/"
         element={
           <Suspense fallback={<Loading />}>
+            <Login />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/signup/"
+        element={
+          <Suspense fallback={<Loading />}>
+            <Signup />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/:id/"
+        element={
+          <CreateLayout>
             <Home />
-          </Suspense>
+          </CreateLayout>
         }
       />
       <Route
-        path="/about"
+        path="/:id/about"
         element={
-          <Suspense fallback={<Loading />}>
+          <CreateLayout>
             <About />
-          </Suspense>
+          </CreateLayout>
         }
       />
       <Route
-        path="/services"
+        path="/:id/services"
         element={
-          <Suspense fallback={<Loading />}>
+          <CreateLayout>
             <Service />
-          </Suspense>
+          </CreateLayout>
         }
       />
       <Route
-        path="/portfolio"
+        path="/:id/portfolio"
         element={
-          <Suspense fallback={<Loading />}>
+          <CreateLayout>
             <Portfolio />
-          </Suspense>
+          </CreateLayout>
         }
       />
       <Route
-        path="/contact"
+        path="/:id/contact"
         element={
-          <Suspense fallback={<Loading />}>
+          <CreateLayout>
             <Contact />
-          </Suspense>
+          </CreateLayout>
         }
       />
     </Routes>
   );
 }
+
+export const CreateLayout = ({ children }) => {
+  return (
+    <Layout>
+      <Suspense fallback={<Loading />}>{children}</Suspense>
+    </Layout>
+  );
+};
