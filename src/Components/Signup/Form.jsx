@@ -1,6 +1,6 @@
 export default function Form() {
   return (
-    <section className="w-full h-[92.6vh] md:h-[91.3vh] bg-secondary dark:bg-dark_secondary">
+    <section className="w-full h-[92.6vh] md:h-[91.3vh]">
       <div className="w-10/12 h-full mx-auto flex items-center justify-center">
         <div className="border-2 w-full border-primary dark:border-dark_primary rounded-lg bg-[#33333346] lg:w-6/12">
           <div className="flex items-center justify-center text-2xl md:text-3xl font-semibold font-sans my-4">
