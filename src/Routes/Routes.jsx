@@ -2,10 +2,13 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Layout from "../Components/Layout/Layout";
 import Loading from "../Components/Loading/Loading";
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
 
 const Signup = lazy(() => import("../Components/Pages/Signup"));
 const Login = lazy(() => import("../Components/Pages/Login"));
 const Profile = lazy(() => import("../Components/Pages/Profile"));
+const Dashboard = lazy(() => import("../Components/Pages/Dashboard"));
 const About = lazy(() => import("../Components/Pages/About"));
 const Home = lazy(() => import("../Components/Pages/Home"));
 const Service = lazy(() => import("../Components/Pages/Service"));
@@ -19,7 +22,9 @@ export default function App() {
         path="/"
         element={
           <Suspense fallback={<Loading />}>
-            <Login />
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
           </Suspense>
         }
       />
@@ -27,7 +32,9 @@ export default function App() {
         path="/signup/"
         element={
           <Suspense fallback={<Loading />}>
-            <Signup />
+            <PublicRoute>
+              <Signup />
+            </PublicRoute>
           </Suspense>
         }
       />
@@ -35,7 +42,19 @@ export default function App() {
         path="/profile/"
         element={
           <Suspense fallback={<Loading />}>
-            <Profile />
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          </Suspense>
+        }
+      />
+      <Route
+        path="/dashboard/"
+        element={
+          <Suspense fallback={<Loading />}>
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
           </Suspense>
         }
       />

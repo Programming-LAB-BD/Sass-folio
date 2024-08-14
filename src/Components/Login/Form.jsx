@@ -1,10 +1,14 @@
+import Cookies from "js-cookie";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function Form() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submit, setSubmit] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +33,17 @@ export default function Form() {
 
       let response = await fetch(req);
       let data = await response.json();
+
+      if (data.message === "Login successfully.") {
+        Cookies.set("saas-folio", data.jwtToken, {
+          expires: 1,
+        });
+
+        setSubmit(false);
+
+        navigate("/dashboard/");
+        return;
+      }
 
       if (data.message === "Wrong email or password.") {
         toast(data.message, {

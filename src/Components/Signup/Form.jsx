@@ -1,4 +1,6 @@
+import Cookies from "js-cookie";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "./Input";
 
 export default function Form() {
@@ -15,6 +17,8 @@ export default function Form() {
     info: "",
   });
   const [submitProcess, setSubmitProcess] = useState(false);
+
+  const navigate = useNavigate();
 
   const nameInput = (e) => {
     let newValue = e.target.value;
@@ -210,7 +214,16 @@ export default function Form() {
       let response = await fetch(req);
       let data = await response.json();
 
-      console.log(data);
+      if (data.message === "Login successfully.") {
+        Cookies.set("saas-folio", data.jwtToken, {
+          expires: 1,
+        });
+
+        setSubmitProcess(false);
+
+        navigate("/dashboard/");
+        return;
+      }
     } catch (error) {
       console.error("Error:", error);
     }
