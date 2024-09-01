@@ -1,12 +1,40 @@
+import { useEffect, useState } from "react";
+import DSIPContext from "../../Contexts/DashboardSidebarIsOpenContext";
+import PositionContext from "../../Contexts/PositionContext";
+import Header from "./Header/Header";
+import AboutPage from "./Pages/AboutPage";
+import ContactPage from "./Pages/ContactPage";
+import DashboardPage from "./Pages/DashboardPage";
+import HomePage from "./Pages/HomePage";
+import PortfolioPage from "./Pages/PortfolioPage";
+import ServicePage from "./Pages/ServicePage";
+
 export default function DashboardComponent() {
+  const [position, setPosition] = useState("dashboard");
+  const [isOpen, setIsOpen] = useState(true);
+  const [mdIsOpen, setMdIsOpen] = useState(false);
+
+  useEffect(() => {
+    console.log(isOpen);
+    console.log(mdIsOpen);
+  }, [isOpen, mdIsOpen]);
+
   return (
     <>
-      <div>
-        Dashboard page Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        Expedita dicta cumque fuga incidunt aspernatur beatae aperiam quis,
-        accusantium, laboriosam in dolores ullam commodi molestiae nobis
-        veritatis. Consequuntur consectetur asperiores minima.
-      </div>
+      <DSIPContext.Provider
+        value={{ isOpen, setIsOpen, mdIsOpen, setMdIsOpen }}
+      >
+        <PositionContext.Provider value={{ position, setPosition }}>
+          <Header />
+        </PositionContext.Provider>
+
+        {position.toLowerCase() === "dashboard" && <DashboardPage />}
+        {position.toLowerCase() === "home" && <HomePage />}
+        {position.toLowerCase() === "about" && <AboutPage />}
+        {position.toLowerCase() === "service" && <ServicePage />}
+        {position.toLowerCase() === "portfolio" && <PortfolioPage />}
+        {position.toLowerCase() === "contact" && <ContactPage />}
+      </DSIPContext.Provider>
     </>
   );
 }
