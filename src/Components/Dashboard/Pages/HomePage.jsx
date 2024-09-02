@@ -1,31 +1,55 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import ProfilePicController from "../Components/ProfilePicController";
+import SocialLink from "../Components/SocialLink";
+
 export default function HomePage() {
+  const [intro, setIntro] = useState({ value: "", info: "", forSubmit: false });
+  const [socialLinkLength, setSocialLinkLength] = useState(1);
+
+  // Introduction validator here
+  useEffect(() => {
+    if (intro.value.length < 200 || intro.value.length > 1000) {
+      setIntro((prev) => {
+        return {
+          ...prev,
+          info: "Introduction must be in 200-1000 characters.",
+          forSubmit: false,
+        };
+      });
+    } else {
+      setIntro((prev) => {
+        return {
+          ...prev,
+          info: "",
+          forSubmit: true,
+        };
+      });
+    }
+  }, [intro.value]);
+
+  // Introduction Controller here
+  const handleIntro = (e) => {
+    setIntro((prev) => {
+      return {
+        ...prev,
+        value: e.target.value,
+        forSubmit: true,
+      };
+    });
+  };
+
+  const handleSocialLinkLength = () => {
+    setSocialLinkLength((prev) => prev + 1);
+  };
+
   return (
     <section id="home">
       <div className="heading_area text-2xl font-medium text-center block w-full md:text-3xl">
         <h1>Your Home Page Controller.</h1>
       </div>
       <form action="" className="mt-10">
-        <div className="input-form-group mb-8 w-[100%] md:w-[550px]">
-          <label>Upload Profile Pic :</label>
-          <div className="relative">
-            <label
-              htmlFor="upload_file"
-              className="font-medium pl-1 cursor-pointer absolute bottom-2"
-            >
-              <div className="bg-slate-300 border-4 border-slate-50 pt-1 rounded-full w-10 h-10 text-center">
-                <i className="fa-solid fa-pen-to-square"></i>
-              </div>
-            </label>
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/3237/3237472.png"
-              alt="Profile Pic"
-              className="w-1/4 border-2 rounded-full cursor-pointer"
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <input type="file" className="hidden" id="upload_file" />
-          </div>
-        </div>
+        <ProfilePicController />
         <div className="input-form-group mb-8 w-[100%] md:w-[550px]">
           <label htmlFor="input" className="font-medium pl-1">
             Introduction :
@@ -34,53 +58,46 @@ export default function HomePage() {
             <textarea
               type="text"
               placeholder="Enter Your Intro"
-              className="p-2 border border-primary rounded w-full bg-secondary text-primary"
+              className={`p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900 ${
+                intro.info !== ""
+                  ? "border-red-400 focus:outline-red-600"
+                  : "focus:outline-gray-400"
+              }`}
               rows="4"
+              onChange={handleIntro}
+              value={intro.value}
+              required
             ></textarea>
-            <i className="fa-solid fa-circle-info text-xl cursor-pointer"></i>
+            <FontAwesomeIcon
+              icon="fa-solid fa-circle-info"
+              className="text-xl cursor-pointer"
+            />
           </div>
           <div className="info text-xs text-zinc-400">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Est nam
-              porro, fugiat voluptatibus
-            </p>
+            {intro.info !== "" ? (
+              <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                {intro.info}
+              </span>
+            ) : (
+              <p className="text-zinc-600 text-xs italic pl-1">
+                Enter your Introduction here, which will display on your
+                Introduction of frist page.
+              </p>
+            )}
           </div>
         </div>
-        <div className="input-form-group mb-8 w-[100%] md:w-[550px]">
-          <label htmlFor="input" className="font-medium pl-1">
-            Social Link :
-          </label>
-          <div className="flex items-center gap-2">
-            <div className="grid grid-flow-col grid-cols-3 gap-2 w-full">
-              <select className="p-2 border border-primary rounded bg-secondary text-primary col-span-1">
-                <option value="">Facebook</option>
-                <option value="">YouTube</option>
-                <option value="">WhatsApp</option>
-                <option value="">Instagram</option>
-                <option value="">TikTok</option>
-                <option value="">X (Twitter)</option>
-                <option value="">Messenger</option>
-                <option value="">Telegram</option>
-                <option value="">LinkedIn</option>
-              </select>
-              <input
-                type="text"
-                placeholder="Enter Your Link"
-                className="p-2 border border-primary rounded bg-secondary text-primary col-span-2"
-              />
-            </div>
-            <i className="fa-solid fa-circle-info text-xl cursor-pointer"></i>
-          </div>
-          <div className="info text-xs text-zinc-400 mb-6">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Est nam
-              porro, fugiat voluptatibus
-            </p>
-          </div>
-          <button className="p-4 border border-white rounded-xl bg-blue-700 text-white font-medium col-span-2">
-            Add More +
-          </button>
-        </div>
+
+        {[...Array(socialLinkLength)].map((_, i) => (
+          <SocialLink key={i} />
+        ))}
+
+        <button
+          type="button"
+          className="p-4 border border-white rounded-xl bg-blue-700 text-white font-medium col-span-2"
+          onClick={handleSocialLinkLength}
+        >
+          Add More +
+        </button>
       </form>
     </section>
   );

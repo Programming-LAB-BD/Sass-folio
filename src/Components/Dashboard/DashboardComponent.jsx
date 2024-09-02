@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import DSIPContext from "../../Contexts/DashboardSidebarIsOpenContext";
 import PositionContext from "../../Contexts/PositionContext";
+import DashboardContainer from "../Container/DashboardContainer";
 import Header from "./Header/Header";
 import AboutPage from "./Pages/AboutPage";
 import ContactPage from "./Pages/ContactPage";
@@ -11,8 +12,8 @@ import ServicePage from "./Pages/ServicePage";
 
 export default function DashboardComponent() {
   const [position, setPosition] = useState("dashboard");
-  const [isOpen, setIsOpen] = useState(true);
-  const [mdIsOpen, setMdIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true); // is open mean it is work in learge devices
+  const [mdIsOpen, setMdIsOpen] = useState(false); // md is open mean it is work in small devices and there is some wrong in the naming convention
 
   useEffect(() => {
     console.log(isOpen);
@@ -28,12 +29,14 @@ export default function DashboardComponent() {
           <Header />
         </PositionContext.Provider>
 
-        {position.toLowerCase() === "dashboard" && <DashboardPage />}
-        {position.toLowerCase() === "home" && <HomePage />}
-        {position.toLowerCase() === "about" && <AboutPage />}
-        {position.toLowerCase() === "service" && <ServicePage />}
-        {position.toLowerCase() === "portfolio" && <PortfolioPage />}
-        {position.toLowerCase() === "contact" && <ContactPage />}
+        <DashboardContainer isOpen={isOpen}>
+          {position.toLowerCase() === "dashboard" && <DashboardPage />}
+          {position.toLowerCase() === "home" && <HomePage />}
+          {position.toLowerCase() === "about" && <AboutPage />}
+          {position.toLowerCase() === "services" && <ServicePage />}
+          {position.toLowerCase() === "portfolio" && <PortfolioPage />}
+          {position.toLowerCase() === "contact" && <ContactPage />}
+        </DashboardContainer>
       </DSIPContext.Provider>
     </>
   );

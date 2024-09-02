@@ -44,11 +44,11 @@ export default function Form() {
   // Description check functionality here
   useEffect(() => {
     if (hittedSubmit) {
-      description.value.length < 50 || description.value.length > 500
+      description.value.length > 500
         ? setDescription((prev) => {
             return {
               ...prev,
-              info: "Description must be in 50-500 characters.",
+              info: "Description can't be Greater than 500 characters.",
               submit: false,
             };
           })

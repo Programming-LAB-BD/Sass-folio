@@ -18,7 +18,7 @@ export default function ServicePage() {
               <input
                 type="text"
                 placeholder="Enter Service Title"
-                className="p-2 border border-primary rounded w-full bg-secondary text-primary"
+                className="p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900"
               />
               <i className="fa-solid fa-circle-info text-xl cursor-pointer"></i>
             </div>
@@ -38,7 +38,7 @@ export default function ServicePage() {
               <input
                 type="file"
                 placeholder="Enter About Yourself"
-                className="p-2 border border-primary rounded w-full bg-secondary text-primary file:rounded-xl file:border-0 file:p-1 file:px-2 file:ring-2"
+                className="p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900 file:rounded-xl file:border-0 file:p-1 file:px-2 file:ring-2"
               />
               <i className="fa-solid fa-circle-info text-xl cursor-pointer"></i>
             </div>
@@ -58,7 +58,7 @@ export default function ServicePage() {
               <textarea
                 type="text"
                 placeholder="Enter Your Service Description"
-                className="p-2 border border-primary rounded w-full bg-secondary text-primary"
+                className="p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900"
                 rows="4"
               ></textarea>
               <i className="fa-solid fa-circle-info text-xl cursor-pointer"></i>

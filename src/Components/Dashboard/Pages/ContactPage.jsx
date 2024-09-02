@@ -14,7 +14,7 @@ export default function ContactPage() {
             <input
               type="text"
               placeholder="Enter Your Address"
-              className="p-2 border border-primary rounded w-full bg-secondary text-primary"
+              className="p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900"
             />
             <i className="fa-solid fa-circle-info text-xl cursor-pointer"></i>
           </div>
@@ -34,7 +34,7 @@ export default function ContactPage() {
             <input
               type="text"
               placeholder="Enter Your Phone Number"
-              className="p-2 border border-primary rounded w-full bg-secondary text-primary"
+              className="p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900"
             />
             <i className="fa-solid fa-circle-info text-xl cursor-pointer"></i>
           </div>
@@ -54,7 +54,7 @@ export default function ContactPage() {
             <input
               type="text"
               placeholder="Enter a Public Email Address"
-              className="p-2 border border-primary rounded w-full bg-secondary text-primary"
+              className="p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900"
             />
             <i className="fa-solid fa-circle-info text-xl cursor-pointer"></i>
           </div>

@@ -31,7 +31,7 @@ const navitems = [
 ];
 
 export default function Header() {
-  const { isOpen, setIsOpen, mdIsOpen, setMdIsOpen } = useContext(DSIPContext);
+  const { mdIsOpen, setMdIsOpen } = useContext(DSIPContext);
 
   return (
     <header>

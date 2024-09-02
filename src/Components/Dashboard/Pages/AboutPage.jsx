@@ -13,7 +13,7 @@ export default function AboutPage() {
             <textarea
               type="text"
               placeholder="Enter About Yourself"
-              className="p-2 border border-primary rounded w-full bg-secondary text-primary"
+              className="p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900"
               rows="4"
             ></textarea>
             <i className="fa-solid fa-circle-info text-xl cursor-pointer"></i>
@@ -34,12 +34,12 @@ export default function AboutPage() {
               <input
                 type="text"
                 placeholder="Enter Your Skill Name"
-                className="p-2 border border-primary rounded bg-secondary text-primary col-span-2"
+                className="p-2 border rounded border-gray-900 bg-[#c7ebee] text-gray-900 col-span-2"
               />
               <input
                 type="number"
                 placeholder="Enter Your Skill Progress"
-                className="p-2 border border-primary rounded bg-secondary text-primary col-span-1"
+                className="p-2 border rounded border-gray-900 bg-[#c7ebee] text-gray-900 col-span-1"
               />
             </div>
             <i className="fa-solid fa-circle-info text-xl cursor-pointer"></i>

@@ -4,7 +4,7 @@ import DSIPContext from "../../../Contexts/DashboardSidebarIsOpenContext";
 import LogoArea from "./LogoArea";
 
 export default function Navbar() {
-  const { isOpen, setIsOpen, mdIsOpen, setMdIsOpen } = useContext(DSIPContext);
+  const { setIsOpen, setMdIsOpen } = useContext(DSIPContext);
 
   const handleOpen = () => {
     setIsOpen((prev) => !prev);
