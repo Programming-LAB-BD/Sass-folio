@@ -1,47 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
 import ProfilePicController from "../Components/ProfilePicController";
 import SocialLink from "../Components/SocialLink";
 
-export default function HomePage() {
-  const [intro, setIntro] = useState({ value: "", info: "", forSubmit: false });
-  const [socialLinkLength, setSocialLinkLength] = useState(1);
-
-  // Introduction validator here
-  useEffect(() => {
-    if (intro.value.length < 200 || intro.value.length > 1000) {
-      setIntro((prev) => {
-        return {
-          ...prev,
-          info: "Introduction must be in 200-1000 characters.",
-          forSubmit: false,
-        };
-      });
-    } else {
-      setIntro((prev) => {
-        return {
-          ...prev,
-          info: "",
-          forSubmit: true,
-        };
-      });
-    }
-  }, [intro.value]);
-
-  // Introduction Controller here
-  const handleIntro = (e) => {
-    setIntro((prev) => {
-      return {
-        ...prev,
-        value: e.target.value,
-        forSubmit: true,
-      };
-    });
-  };
-
-  const handleSocialLinkLength = () => {
-    setSocialLinkLength((prev) => prev + 1);
-  };
+export default function HomePage({ controller }) {
+  const { intro, handleIntro, socialLinkLength, handleSocialLinkLength } =
+    controller;
 
   return (
     <section id="home">
@@ -93,7 +56,7 @@ export default function HomePage() {
 
         <button
           type="button"
-          className="p-4 border border-white rounded-xl bg-blue-700 text-white font-medium col-span-2"
+          className="p-4 border border-white rounded-xl bg-blue-700 text-white font-medium col-span-2 mb-10"
           onClick={handleSocialLinkLength}
         >
           Add More +

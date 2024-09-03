@@ -1,90 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
 import LogoController from "../Components/LogoController";
 
-export default function DashboardPage() {
-  const [name, setName] = useState({ value: "", info: "", forSubmit: false });
-  const [title, setTitle] = useState({ value: "", info: "", forSubmit: false });
-  const [description, setDescription] = useState({
-    value: "",
-    info: "",
-    forSubmit: false,
-  });
-
-  // Title Validatior here
-  useEffect(() => {
-    if (title.value.length > 30) {
-      setTitle((prev) => {
-        return {
-          ...prev,
-          info: "Title can't be greater than 30 characters.",
-          forSubmit: false,
-        };
-      });
-    } else {
-      setTitle((prev) => {
-        return {
-          ...prev,
-          info: "",
-          forSubmit: true,
-        };
-      });
-    }
-  }, [title.value]);
-
-  // Description Validatior here
-  useEffect(() => {
-    if (description.value.length > 500) {
-      setDescription((prev) => {
-        return {
-          ...prev,
-          info: "Description can't be greater than 500 characters.",
-          forSubmit: false,
-        };
-      });
-    } else {
-      setDescription((prev) => {
-        return {
-          ...prev,
-          info: "",
-          forSubmit: true,
-        };
-      });
-    }
-  }, [description.value]);
-
-  // Name Controller here
-  const handleName = (e) => {
-    setName((prev) => {
-      return {
-        ...prev,
-        value: e.target.value,
-        forSubmit: true,
-      };
-    });
-  };
-
-  // Title Controller here
-  const handleTitle = (e) => {
-    setTitle((prev) => {
-      return {
-        ...prev,
-        value: e.target.value,
-        forSubmit: true,
-      };
-    });
-  };
-
-  // Description Controller here
-  const handleDescription = (e) => {
-    setDescription((prev) => {
-      return {
-        ...prev,
-        value: e.target.value,
-        forSubmit: true,
-      };
-    });
-  };
+export default function DashboardPage({ controller }) {
+  const {
+    name,
+    handleName,
+    title,
+    handleTitle,
+    description,
+    handleDescription,
+  } = controller;
 
   return (
     <section id="dashboard">
@@ -188,15 +113,6 @@ export default function DashboardPage() {
             )}
           </div>
         </div>
-
-        <button
-          className="p-4 border border-white rounded-xl bg-blue-700 text-white font-medium col-span-2"
-          disabled={
-            !name.forSubmit || !title.forSubmit || !description.forSubmit
-          }
-        >
-          Update Dashboard
-        </button>
       </form>
     </section>
   );
