@@ -13,6 +13,36 @@ export default function HomePage({ stateUpdateFunction, token }) {
     forSubmit: false,
     formStatus: false,
   });
+  const [facebook, setFacebook] = useState({
+    value: "",
+    info: "",
+    forSubmit: false,
+    formStatus: false,
+  })
+  const [instagram, setInstagram] = useState({
+    value: "",
+    info: "",
+    forSubmit: false,
+    formStatus: false,
+  })
+  const [twitter, setTwitter] = useState({
+    value: "",
+    info: "",
+    forSubmit: false,
+    formStatus: false,
+  })
+  const [github, setGithub] = useState({
+    value: "",
+    info: "",
+    forSubmit: false,
+    formStatus: false,
+  })
+  const [linkedin, setLinkedin] = useState({
+    value: "",
+    info: "",
+    forSubmit: false,
+    formStatus: false,
+  })
 
   // Main UseEffect Function here
   useEffect(() => {
@@ -26,6 +56,11 @@ export default function HomePage({ stateUpdateFunction, token }) {
 
       setResult(data.data);
       setIntro((prev) => stateUpdateFunction(prev, data.data.introduction));
+      setFacebook((prev) => stateUpdateFunction(prev, data.data.facebook || ""));
+      setInstagram((prev) => stateUpdateFunction(prev, data.data.instagram || ""));
+      setTwitter((prev) => stateUpdateFunction(prev, data.data.twitter || ""));
+      setGithub((prev) => stateUpdateFunction(prev, data.data.github || ""));
+      setLinkedin((prev) => stateUpdateFunction(prev, data.data.linkedin || ""));
     }
 
     fetchData();
@@ -52,11 +87,22 @@ export default function HomePage({ stateUpdateFunction, token }) {
         {
           ...result,
           introduction: intro.value,
+          facebook: facebook.value,
+          instagram: instagram.value,
+          twitter: twitter.value,
+          github: github.value,
+          linkedin: linkedin.value,
           token,
         }
       );
 
       setIntro((prev) => stateUpdateFunction(prev, newData.data.updateditem.introduction));
+      setFacebook((prev) => stateUpdateFunction(prev, newData.data.updateditem.facebook || ""));
+      setInstagram((prev) => stateUpdateFunction(prev, newData.data.updateditem.instagram || ""));
+      setTwitter((prev) => stateUpdateFunction(prev, newData.data.updateditem.twitter || ""));
+      setGithub((prev) => stateUpdateFunction(prev, newData.data.updateditem.github || ""));
+      setLinkedin((prev) => stateUpdateFunction(prev, newData.data.updateditem.linkedin || ""));
+
     } catch (error) {
       console.error("Error updating Home:", error);
     } finally {
@@ -90,11 +136,10 @@ export default function HomePage({ stateUpdateFunction, token }) {
             <textarea
               type="text"
               placeholder="Enter Your Intro"
-              className={`p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900 ${
-                intro.info !== ""
-                  ? "border-red-400 focus:outline-red-600"
-                  : "focus:outline-gray-400"
-              }`}
+              className={`p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900 ${intro.info !== ""
+                ? "border-red-400 focus:outline-red-600"
+                : "focus:outline-gray-400"
+                }`}
               rows="10"
               onChange={handleIntro}
               value={intro.value}
@@ -120,13 +165,13 @@ export default function HomePage({ stateUpdateFunction, token }) {
           </div>
         </div>
 
-        <SocialLinks />
+        <SocialLinks states={{ facebook, setFacebook, instagram, setInstagram, twitter, setTwitter, github, setGithub, linkedin, setLinkedin }} />
 
         <button
           type="submit"
           className="p-4 border border-white rounded-xl bg-blue-700 text-white font-medium col-span-2 px-8 mb-10"
           onClick={handleSubmit}
-          disabled={!intro.forSubmit}
+          disabled={!intro.forSubmit && !facebook.forSubmit && !instagram.forSubmit && !twitter.forSubmit && !github.forSubmit && !linkedin.forSubmit}
         >
           {loading && (
             <svg

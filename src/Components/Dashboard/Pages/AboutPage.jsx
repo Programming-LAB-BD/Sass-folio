@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Skill from "../Components/Skill";
+import { v4 as uuidv4 } from "uuid";
+import Skills from "../Components/Skills";
 
 export default function AboutPage({ stateUpdateFunction, token }) {
   const [result, setResult] = useState({});
@@ -11,7 +12,14 @@ export default function AboutPage({ stateUpdateFunction, token }) {
     forSubmit: false,
     formStatus: false,
   });
-  const [skillLength, setSkillLength] = useState(1);
+  const [skillLength, setSkillLength] = useState([
+    {
+      key: uuidv4(),
+      name: "",
+      progress: 0,
+    },
+  ]);
+  const [skillSubmit, setSkillSubmit] = useState(false)
 
   // Main UseEffect Function here
   useEffect(() => {
@@ -25,6 +33,8 @@ export default function AboutPage({ stateUpdateFunction, token }) {
 
       setResult(data.data);
       setAbout((prev) => stateUpdateFunction(prev, data.data.aboutText));
+      setSkillLength(data.data.skills)
+      setSkillSubmit(false)
     }
 
     fetchData();
@@ -51,11 +61,14 @@ export default function AboutPage({ stateUpdateFunction, token }) {
         {
           ...result,
           aboutText: about.value,
+          skills: skillLength,
           token,
         }
       );
 
       setAbout((prev) => stateUpdateFunction(prev, newData.data.updateditem.aboutText));
+      setSkillLength(newData.data.updateditem.skills)
+      setSkillSubmit(false)
     } catch (error) {
       console.error("Error updating About:", error);
     } finally {
@@ -74,9 +87,45 @@ export default function AboutPage({ stateUpdateFunction, token }) {
     });
   };
 
-  // Skill Counter Controller here
-  const handleSkillLength = () => {
-    setSkillLength((prev) => prev + 1);
+  // Function to add a new skill field
+  const handleSkillLength = (e) => {
+    e.preventDefault();
+    setSkillLength((prev) => [
+      ...prev,
+      {
+        key: uuidv4(),
+        name: "",
+        progress: 0,
+      },
+    ]);
+  };
+
+  // Function to remove a skill field
+  const handleSkillLengthDecrease = (uniqueKey) => {
+    if (skillLength.length > 1) {
+      setSkillLength((prev) => prev.filter((skill) => skill.key !== uniqueKey));
+    }
+    setSkillSubmit(true)
+  };
+
+  // Function to update the name of a skill
+  const handleNameChange = (uniqueKey, value) => {
+    setSkillLength((prev) =>
+      prev.map((skill) =>
+        skill.key === uniqueKey ? { ...skill, name: value } : skill
+      )
+    );
+    setSkillSubmit(true)
+  };
+
+  // Function to update the progress of a skill
+  const handleProgressChange = (uniqueKey, value) => {
+    setSkillLength((prev) =>
+      prev.map((skill) =>
+        skill.key === uniqueKey ? { ...skill, progress: value } : skill
+      )
+    );
+    setSkillSubmit(true)
   };
 
   return (
@@ -93,11 +142,10 @@ export default function AboutPage({ stateUpdateFunction, token }) {
             <textarea
               type="text"
               placeholder="Enter About Yourself"
-              className={`p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900 ${
-                about.info !== ""
-                  ? "border-red-400 focus:outline-red-600"
-                  : "focus:outline-gray-400"
-              }`}
+              className={`p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900 ${about.info !== ""
+                ? "border-red-400 focus:outline-red-600"
+                : "focus:outline-gray-400"
+                }`}
               rows="10"
               value={about.value}
               onChange={handleAbout}
@@ -118,9 +166,31 @@ export default function AboutPage({ stateUpdateFunction, token }) {
             )}
           </div>
         </div>
-        {[...Array(skillLength)].map((_, i) => (
-          <Skill key={i} />
-        ))}
+        <div className="input-form-group mb-8 w-[100%] md:w-[550px]">
+          <label htmlFor="input" className="font-medium pl-1">
+            Skills :
+          </label>
+
+          {skillLength.map((skill, index) => (
+            <Skills
+              key={index}
+              uniqueKey={skill.key}
+              name={skill.name}
+              progress={skill.progress}
+              onNameChange={handleNameChange}
+              onProgressChange={handleProgressChange}
+              handleSkillLengthDecrease={handleSkillLengthDecrease}
+            />
+          ))}
+
+          <div className="info text-xs text-zinc-400 mb-6">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Est nam
+              porro, fugiat voluptatibus
+            </p>
+          </div>
+        </div>
+
         <button
           className="p-4 border border-white rounded-xl bg-blue-700 text-white font-medium col-span-2 mb-10 block"
           onClick={handleSkillLength}
@@ -132,7 +202,7 @@ export default function AboutPage({ stateUpdateFunction, token }) {
           type="submit"
           className="p-4 border border-white rounded-xl bg-blue-700 text-white font-medium col-span-2 px-8 mb-10"
           onClick={handleSubmit}
-          disabled={!about.forSubmit}
+          disabled={!about.forSubmit && !skillSubmit}
         >
           {loading && (
             <svg
