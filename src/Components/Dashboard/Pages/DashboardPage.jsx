@@ -3,7 +3,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import LogoController from "../Components/LogoController";
 
-// TODO: update হওয়ার পরে ভ্যালু আনডিফাইন্ড হয়ে যাচ্ছে এটার সমাধান করতে হবে। solved in this file
 export default function DashboardPage({ stateUpdateFunction, token }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState({});
@@ -98,11 +97,14 @@ export default function DashboardPage({ stateUpdateFunction, token }) {
           token,
         }
       );
-      
 
       setResult(newData.data.data);
-      setName((prev) => stateUpdateFunction(prev, newData.data.updateditem.name));
-      setTitle((prev) => stateUpdateFunction(prev, newData.data.updateditem.title));
+      setName((prev) =>
+        stateUpdateFunction(prev, newData.data.updateditem.name)
+      );
+      setTitle((prev) =>
+        stateUpdateFunction(prev, newData.data.updateditem.title)
+      );
       setDescription((prev) =>
         stateUpdateFunction(prev, newData.data.updateditem.description)
       );

@@ -47,3 +47,7 @@
   transform: rotate(180deg);
   left: -30px;
 }
+
+.reactEasyCrop_Container {
+  position: relative !important;
+}
