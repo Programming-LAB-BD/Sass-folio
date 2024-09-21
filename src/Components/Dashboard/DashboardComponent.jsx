@@ -53,7 +53,9 @@ export default function DashboardComponent() {
           {position.toLowerCase() === "about" && (
             <AboutPage stateUpdateFunction={SSUWGRFB} token={token} />
           )}
-          {position.toLowerCase() === "services" && <ServicePage />}
+          {position.toLowerCase() === "services" && (
+            <ServicePage token={token} />
+          )}
           {position.toLowerCase() === "portfolio" && <PortfolioPage />}
           {position.toLowerCase() === "contact" && (
             <ContactPage stateUpdateFunction={SSUWGRFB} token={token} />

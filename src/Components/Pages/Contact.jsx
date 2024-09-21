@@ -1,25 +1,9 @@
+import { useContext } from "react";
+import SDContext from "../../Contexts/ShowcaseDataContext";
 import ContactInfoItem from "../Contact/ContactInfoItem";
 import FormGroup from "../Contact/FormGroup";
 import Input from "../Contact/Input";
 import Textarea from "../Contact/Textarea";
-
-const contactInfoItems = [
-  {
-    name: "Address",
-    icon: ["fas", "location-dot"],
-    text: "198 West 21th Street, Suite 721 New York NY 10016",
-  },
-  {
-    name: "Phone",
-    icon: ["fas", "phone"],
-    text: "+880 12345 67890",
-  },
-  {
-    name: "Email",
-    icon: ["fas", "paper-plane"],
-    text: "contact@programminglab.com.bd",
-  },
-];
 
 const formItems = [
   {
@@ -41,6 +25,26 @@ const formItems = [
 ];
 
 export default function ContactPage() {
+  const { address, phone, contactEmail } = useContext(SDContext);
+
+  const contactInfoItems = [
+    {
+      name: "Address",
+      icon: ["fas", "location-dot"],
+      text: address || "Loading...",
+    },
+    {
+      name: "Phone",
+      icon: ["fas", "phone"],
+      text: phone || "Loading...",
+    },
+    {
+      name: "Email",
+      icon: ["fas", "paper-plane"],
+      text: contactEmail || "Loading...",
+    },
+  ];
+
   return (
     <section
       id="contact"

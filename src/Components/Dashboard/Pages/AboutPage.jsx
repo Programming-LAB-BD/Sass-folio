@@ -19,7 +19,7 @@ export default function AboutPage({ stateUpdateFunction, token }) {
       progress: 0,
     },
   ]);
-  const [skillSubmit, setSkillSubmit] = useState(false)
+  const [skillSubmit, setSkillSubmit] = useState(false);
 
   // Main UseEffect Function here
   useEffect(() => {
@@ -33,8 +33,8 @@ export default function AboutPage({ stateUpdateFunction, token }) {
 
       setResult(data.data);
       setAbout((prev) => stateUpdateFunction(prev, data.data.aboutText));
-      setSkillLength(data.data.skills)
-      setSkillSubmit(false)
+      setSkillLength(data.data.skills);
+      setSkillSubmit(false);
     }
 
     fetchData();
@@ -66,9 +66,11 @@ export default function AboutPage({ stateUpdateFunction, token }) {
         }
       );
 
-      setAbout((prev) => stateUpdateFunction(prev, newData.data.updateditem.aboutText));
-      setSkillLength(newData.data.updateditem.skills)
-      setSkillSubmit(false)
+      setAbout((prev) =>
+        stateUpdateFunction(prev, newData.data.updateditem.aboutText)
+      );
+      setSkillLength(newData.data.updateditem.skills);
+      setSkillSubmit(false);
     } catch (error) {
       console.error("Error updating About:", error);
     } finally {
@@ -105,7 +107,7 @@ export default function AboutPage({ stateUpdateFunction, token }) {
     if (skillLength.length > 1) {
       setSkillLength((prev) => prev.filter((skill) => skill.key !== uniqueKey));
     }
-    setSkillSubmit(true)
+    setSkillSubmit(true);
   };
 
   // Function to update the name of a skill
@@ -115,7 +117,7 @@ export default function AboutPage({ stateUpdateFunction, token }) {
         skill.key === uniqueKey ? { ...skill, name: value } : skill
       )
     );
-    setSkillSubmit(true)
+    setSkillSubmit(true);
   };
 
   // Function to update the progress of a skill
@@ -125,7 +127,7 @@ export default function AboutPage({ stateUpdateFunction, token }) {
         skill.key === uniqueKey ? { ...skill, progress: value } : skill
       )
     );
-    setSkillSubmit(true)
+    setSkillSubmit(true);
   };
 
   return (
@@ -142,10 +144,11 @@ export default function AboutPage({ stateUpdateFunction, token }) {
             <textarea
               type="text"
               placeholder="Enter About Yourself"
-              className={`p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900 ${about.info !== ""
-                ? "border-red-400 focus:outline-red-600"
-                : "focus:outline-gray-400"
-                }`}
+              className={`p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900 ${
+                about.info !== ""
+                  ? "border-red-400 focus:outline-red-600"
+                  : "focus:outline-gray-400"
+              }`}
               rows="10"
               value={about.value}
               onChange={handleAbout}
@@ -191,12 +194,14 @@ export default function AboutPage({ stateUpdateFunction, token }) {
           </div>
         </div>
 
-        <button
-          className="p-4 border border-white rounded-xl bg-blue-700 text-white font-medium col-span-2 mb-10 block"
-          onClick={handleSkillLength}
-        >
-          Add More +
-        </button>
+        {skillLength.length < 6 && (
+          <button
+            className="p-4 border border-white rounded-xl bg-blue-700 text-white font-medium col-span-2 mb-10 block"
+            onClick={handleSkillLength}
+          >
+            Add More +
+          </button>
+        )}
 
         <button
           type="submit"

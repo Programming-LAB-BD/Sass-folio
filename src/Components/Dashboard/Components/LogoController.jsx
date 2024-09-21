@@ -1,16 +1,24 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import Logo from "../../../assets/logo.png";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 import Modal from "./Modal";
 
 export default function LogoController() {
   const [isOpen, setIsOpen] = useState(false);
   const [imgSrc, setImgSrc] = useState();
+  const [img, setImg] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [logo, setLogo] = useState("/img/loading__.gif");
+
+  const token = Cookies.get("saas-folio");
 
   const handleUploadImage = (e) => {
     e.preventDefault();
     const file = e.target.files?.[0];
     if (!e.target.files && e.target.files.length <= 0) return;
+
+    setImg(file); // there is set original image for getting information.
 
     const reader = new FileReader();
     reader.addEventListener("load", () => {
@@ -21,6 +29,55 @@ export default function LogoController() {
 
     reader.readAsDataURL(file);
   };
+
+  const uploadLogoToDB = async (file) => {
+    if (!file) return;
+    setLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("logo", file);
+      formData.append("token", token);
+
+      let newImage = await axios.post(
+        `${import.meta.env.REACT_APP_BACKEND_URI}/upload/logo`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      setLogo(newImage.data.logo);
+    } catch (error) {
+      console.error("Error updating dashboard:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const generateUrl = async () => {
+      let fullData = await axios.post(
+        import.meta.env.REACT_APP_BACKEND_URI + "/site/",
+        {
+          token,
+        }
+      );
+
+      let newData = await axios.post(
+        `${import.meta.env.REACT_APP_BACKEND_URI}/api/generate/image`,
+        {
+          imagePath: fullData.data.logo,
+        }
+      );
+
+      setLogo(newData.data.url);
+    };
+
+    generateUrl();
+  }, [logo]);
 
   return (
     <div className="input-form-group mb-8 w-[100%] md:w-[550px] relative">
@@ -35,7 +92,7 @@ export default function LogoController() {
           </div>
         </label>
         <img
-          src={Logo}
+          src={logo}
           alt="Profile Pic"
           className="w-3/4 border-2 rounded-md cursor-pointer"
         />
@@ -51,11 +108,15 @@ export default function LogoController() {
 
       <Modal
         data={{
+          ASPECT_RATIO: 5 / 1,
           isOpen,
           setIsOpen,
           imgSrc,
           setImgSrc,
+          img,
+          loading,
         }}
+        uploadFunction={uploadLogoToDB}
       />
     </div>
   );

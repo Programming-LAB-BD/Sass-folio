@@ -61,25 +61,49 @@ export default async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
   return canvas;
 }
 
-export const generateDownload = async (imageSrc, crop) => {
+export const generateImageFile = async (imageSrc, crop, img) => {
   if (!crop || !imageSrc) {
     return;
   }
 
   const canvas = await getCroppedImg(imageSrc, crop);
 
-  canvas.toBlob(
-    (blob) => {
-      const previewUrl = window.URL.createObjectURL(blob);
+  function getCanvasBlob(canvas) {
+    return new Promise(function (resolve) {
+      canvas.toBlob(
+        function (blob) {
+          resolve(blob);
+        },
+        "image/png",
+        0.66
+      );
+    });
+  }
 
-      const anchor = document.createElement("a");
-      anchor.download = "image.jpeg";
-      anchor.href = URL.createObjectURL(blob);
-      anchor.click();
+  var canvasBlob = await getCanvasBlob(canvas);
 
-      window.URL.revokeObjectURL(previewUrl);
-    },
-    "image/jpeg",
-    0.66
-  );
+  return new File([canvasBlob], img.name, { type: "image/png" });
 };
+
+// export const generateImageFile = async (imageSrc, crop) => {
+//   if (!crop || !imageSrc) {
+//     return;
+//   }
+
+//   const canvas = await getCroppedImg(imageSrc, crop);
+
+//   canvas.toBlob(
+//     (blob) => {
+//       const previewUrl = window.URL.createObjectURL(blob);
+
+//       const anchor = document.createElement("a");
+//       anchor.download = "image.jpeg";
+//       anchor.href = URL.createObjectURL(blob);
+//       anchor.click();
+
+//       window.URL.revokeObjectURL(previewUrl);
+//     },
+//     "image/png",
+//     0.66
+//   );
+// };

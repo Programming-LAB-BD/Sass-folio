@@ -1,7 +1,10 @@
-import { lazy, Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
+import axios from "axios";
+import { lazy, Suspense, useEffect, useState } from "react";
+import { Route, Routes, useParams } from "react-router-dom";
 import Layout from "../Components/Layout/Layout";
 import Loading from "../Components/Loading/Loading";
+import PageNotFound from "../Components/Pages/PageNotFound";
+import ShowcaseDataContext from "../Contexts/ShowcaseDataContext";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 
@@ -59,7 +62,7 @@ export default function App() {
         }
       />
       <Route
-        path="/:id/"
+        path="/:username/"
         element={
           <CreateLayout>
             <Home />
@@ -67,7 +70,7 @@ export default function App() {
         }
       />
       <Route
-        path="/:id/about"
+        path="/:username/about"
         element={
           <CreateLayout>
             <About />
@@ -75,7 +78,7 @@ export default function App() {
         }
       />
       <Route
-        path="/:id/services"
+        path="/:username/services"
         element={
           <CreateLayout>
             <Service />
@@ -83,7 +86,7 @@ export default function App() {
         }
       />
       <Route
-        path="/:id/portfolio"
+        path="/:username/portfolio"
         element={
           <CreateLayout>
             <Portfolio />
@@ -91,7 +94,7 @@ export default function App() {
         }
       />
       <Route
-        path="/:id/contact"
+        path="/:username/contact"
         element={
           <CreateLayout>
             <Contact />
@@ -103,9 +106,43 @@ export default function App() {
 }
 
 export const CreateLayout = ({ children }) => {
+  const { username } = useParams();
+  const [result, setResult] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let data = await axios.post(
+        import.meta.env.REACT_APP_BACKEND_URI + "/site/get",
+        {
+          username,
+        }
+      );
+
+      setResult(data.data);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <Layout>
-      <Suspense fallback={<Loading />}>{children}</Suspense>
-    </Layout>
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          {result.message ? (
+            <PageNotFound />
+          ) : (
+            <ShowcaseDataContext.Provider value={result}>
+              <Layout>
+                <Suspense fallback={<Loading />}>{children}</Suspense>
+              </Layout>
+            </ShowcaseDataContext.Provider>
+          )}
+        </>
+      )}
+    </>
   );
 };
