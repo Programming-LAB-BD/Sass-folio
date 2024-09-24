@@ -6,6 +6,7 @@ import PreviousService from "../Components/PreviousService";
 export default function ServicePage({ token }) {
   const [serviceLength, setServiceLength] = useState([]);
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Main UseEffect Function here
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function ServicePage({ token }) {
         //
 
         try {
+          setLoading(true);
           let singleService = await axios.post(
             import.meta.env.REACT_APP_BACKEND_URI + "/service/",
             { id }
@@ -52,11 +54,37 @@ export default function ServicePage({ token }) {
           });
         } catch (err) {
           console.log(err);
+        } finally {
+          setLoading(false);
         }
       }
     }
     fetchDataSinglly();
-  }, [serviceLength, setData]);
+  }, [serviceLength]);
+
+  const handleDeletePreview = async (id) => {
+    try {
+      let deleteItem = await axios.post(
+        `${import.meta.env.REACT_APP_BACKEND_URI}/service/delete`,
+        {
+          token,
+          id,
+        }
+      );
+
+      if (deleteItem.data.delete) {
+        setServiceLength((prev) => {
+          return prev.filter((value) => value !== id);
+        });
+
+        setData((prev) => {
+          return prev.filter((value) => value._id !== id);
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <section id="service">
@@ -64,8 +92,16 @@ export default function ServicePage({ token }) {
         <h1>Your Service Page Controller.</h1>
       </div>
 
-      <CreateService token={token} setServiceLength={setServiceLength} />
-      <PreviousService data={data} />
+      <CreateService
+        token={token}
+        setServiceLength={setServiceLength}
+        setData={setData}
+      />
+      <PreviousService
+        data={data}
+        handleDeletePreview={handleDeletePreview}
+        loading={loading}
+      />
     </section>
   );
 }

@@ -1,9 +1,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Cookies from "js-cookie";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import DSIPContext from "../../../Contexts/DashboardSidebarIsOpenContext";
 
 export default function LogoutArea() {
   const { isOpen } = useContext(DSIPContext);
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Cookies.remove("saas-folio");
+    navigate("/");
+  };
 
   return (
     <div className="absolute bottom-8 w-[90%]">
@@ -12,7 +21,7 @@ export default function LogoutArea() {
           !isOpen && "max-w-[70%] pl-2"
         }`}
       >
-        <a id="logout" href="#">
+        <a id="logout" onClick={handleLogout} className="cursor-pointer">
           <FontAwesomeIcon
             icon="fa-solid fa-circle-user"
             className="text-xl mr-1"

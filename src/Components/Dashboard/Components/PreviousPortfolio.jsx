@@ -2,7 +2,7 @@ import { useState } from "react";
 import LoadingItem from "./LoadingItem";
 import PreviewModal from "./PreviewModal";
 
-const PreviousService = ({ data, handleDeletePreview, loading }) => {
+const PreviousPortfolio = ({ data, handleDeletePreview, loading }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentData, setCurrentData] = useState(null);
 
@@ -24,11 +24,11 @@ const PreviousService = ({ data, handleDeletePreview, loading }) => {
           <div className="title py-1 mb-3 text-2xl font-medium text-center border-b-2 border-slate-800">
             {singleData.name}
           </div>
-          <div className="text-center text-8xl mb-3">
+          <div className="icon text-center text-8xl mb-3">
             <img
-              src={singleData.icon}
+              src={singleData.thumbnail}
               alt={singleData.name}
-              className="w-3/4 mx-auto"
+              className="aspect-video"
             />
           </div>
           <div className="description mb-3">
@@ -57,4 +57,4 @@ const PreviousService = ({ data, handleDeletePreview, loading }) => {
   );
 };
 
-export default PreviousService;
+export default PreviousPortfolio;

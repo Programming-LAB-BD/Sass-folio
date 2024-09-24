@@ -1,53 +1,72 @@
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import SDContext from "../../Contexts/ShowcaseDataContext";
 import PageContainer from "../Container/PageContainer";
 import PortfolioItem from "../Portfolio/PortfolioItem";
 
-const portfolioItems = [
-  {
-    image_src: "/img/portfolio_1.jpg",
-    image_alt: "Portfolio Image",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis aliquid placeat cupiditate facere, repellat, quasi quidem quae dolor quos perspiciatis asperiores commodi alias nam suscipit natus ipsam ab doloribus sint.",
-  },
-  {
-    image_src: "/img/portfolio_2.jpg",
-    image_alt: "Portfolio Image",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis aliquid placeat cupiditate facere, repellat, quasi quidem quae dolor quos perspiciatis asperiores commodi alias nam suscipit natus ipsam ab doloribus sint.",
-  },
-  {
-    image_src: "/img/portfolio_3.jpg",
-    image_alt: "Portfolio Image",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis aliquid placeat cupiditate facere, repellat, quasi quidem quae dolor quos perspiciatis asperiores commodi alias nam suscipit natus ipsam ab doloribus sint.",
-  },
-  {
-    image_src: "/img/portfolio_4.jpg",
-    image_alt: "Portfolio Image",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis aliquid placeat cupiditate facere, repellat, quasi quidem quae dolor quos perspiciatis asperiores commodi alias nam suscipit natus ipsam ab doloribus sint.",
-  },
-  {
-    image_src: "/img/portfolio_5.jpg",
-    image_alt: "Portfolio Image",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis aliquid placeat cupiditate facere, repellat, quasi quidem quae dolor quos perspiciatis asperiores commodi alias nam suscipit natus ipsam ab doloribus sint.",
-  },
-  {
-    image_src: "/img/portfolio_6.jpg",
-    image_alt: "Portfolio Image",
-    text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis aliquid placeat cupiditate facere, repellat, quasi quidem quae dolor quos perspiciatis asperiores commodi alias nam suscipit natus ipsam ab doloribus sint.",
-  },
-];
-
 export default function PortfolioPage() {
+  const { portfolio } = useContext(SDContext);
+  const [portfolioLength, setPortfolioLength] = useState([]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Main UseEffect Function here
+  useEffect(() => {
+    setPortfolioLength(portfolio);
+  }, [portfolio]);
+
+  // Read data Singlly
+  useEffect(() => {
+    if (portfolioLength.length < 1) return;
+
+    async function fetchDataSinglly() {
+      for (const id of portfolioLength) {
+        // checking here.
+        const metchedData = data.find((item) => item._id === id);
+        if (metchedData) return;
+        //
+
+        try {
+          setLoading(true);
+          let singlePortfolio = await axios.post(
+            import.meta.env.REACT_APP_BACKEND_URI + "/portfolio/",
+            { id }
+          );
+
+          let image = await axios.post(
+            `${import.meta.env.REACT_APP_BACKEND_URI}/api/generate/image`,
+            { imagePath: singlePortfolio.data.thumbnail }
+          );
+
+          singlePortfolio.data.thumbnail = image.data.url;
+
+          setData((prev) => {
+            return [...prev, singlePortfolio.data];
+          });
+        } catch (err) {
+          console.log(err);
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+    fetchDataSinglly();
+  }, [portfolioLength]);
+
   return (
     <PageContainer heading={"My Portfolio"}>
       <div
         id="service_items"
         className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 justify-center items-center"
       >
-        {portfolioItems.map((item, index) => (
+        {data.map((item, index) => (
           <PortfolioItem
-            image_src={item.image_src}
-            image_alt={item.image_alt}
-            text={item.text}
+            name={item.name}
+            image_src={item.thumbnail}
+            text={item.description}
             key={index}
             index={index}
+            loading={loading}
           />
         ))}
       </div>

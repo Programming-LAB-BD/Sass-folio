@@ -33,13 +33,13 @@ export default function LogoController({ data, uploadFunction }) {
       <div
         className={`fixed ${
           !isOpen && "hidden"
-        } top-0 left-0 insert-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full`}
+        } top-0 left-0 insert-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-10`}
         id="modal"
       ></div>
       <div
         className={`absolute ${
           !isOpen && "hidden"
-        } -top-10 left-0 md:left-56 flex flex-col justify-between mx-auto p-5 border border-secondary dark:border-dark_secondary w-full shadow-lg rounded-md bg-primary dark:bg-dark_primary`}
+        } -top-10 left-0 md:left-56 z-50 flex flex-col justify-between mx-auto p-5 border border-secondary dark:border-dark_secondary w-full shadow-lg rounded-md bg-primary dark:bg-dark_primary`}
       >
         <div
           id="heading_of_modal"

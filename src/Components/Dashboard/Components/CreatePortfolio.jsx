@@ -1,11 +1,10 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useState } from "react";
-import ServiceIcon from "../Components/ServiceIcon";
+import PortfolioThumbnail from "./PortfolioThumbnail";
 
-const CreateService = ({ token, setServiceLength, setData }) => {
-  const [icon, setIcon] = useState("");
-  const [title, setTitle] = useState("");
+const CreatePorfolio = ({ token, setPortfolioLength, setData }) => {
+  const [thumb, setThumb] = useState("");
+  const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -13,19 +12,19 @@ const CreateService = ({ token, setServiceLength, setData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (!title || !description || !icon) return;
-    if (description.length < 50)
-      return setError("Description must be Greater than 50 character");
+    if (!name || !description || !thumb) return;
+    if (description.length < 200)
+      return setError("Description must be Greater than 200 character");
 
     setLoading(true);
     try {
       // I'm uploading the icon here
       const formData = new FormData();
-      formData.append("service", icon);
+      formData.append("portfolio", thumb);
       formData.append("token", token);
 
       let data = await axios.post(
-        `${import.meta.env.REACT_APP_BACKEND_URI}/upload/icon`,
+        `${import.meta.env.REACT_APP_BACKEND_URI}/upload/thumb`,
         formData,
         {
           headers: {
@@ -34,33 +33,34 @@ const CreateService = ({ token, setServiceLength, setData }) => {
         }
       );
 
-      // I'm creating the service here
-      let service = await axios.post(
-        `${import.meta.env.REACT_APP_BACKEND_URI}/service/create`,
+      // I'm creating the Portfolio here
+      let portfolio = await axios.post(
+        `${import.meta.env.REACT_APP_BACKEND_URI}/portfolio/create`,
         {
-          name: title,
-          icon: data.data.icon,
+          name,
+          thumbnail: data.data.thumb,
           description,
           token,
         }
       );
 
-      let image = await axios.post(
-        `${import.meta.env.REACT_APP_BACKEND_URI}/api/generate/image`,
-        { imagePath: service.data.icon }
-      );
+      if (portfolio.data) {
+        //
+        let image = await axios.post(
+          `${import.meta.env.REACT_APP_BACKEND_URI}/api/generate/image`,
+          { imagePath: portfolio.data.thumbnail }
+        );
+        portfolio.data.thumbnail = image.data.url;
+        //
 
-      service.data.icon = image.data.url;
-
-      if (service.data) {
-        setIcon("");
-        setTitle("");
+        setThumb("");
+        setName("");
         setDescription("");
-        setServiceLength((prev) => {
-          return [...prev, service.data._id];
+        setPortfolioLength((prev) => {
+          return [...prev, portfolio.data._id];
         });
         setData((prev) => {
-          return [...prev, service.data];
+          return [...prev, portfolio.data];
         });
       }
     } catch (err) {
@@ -71,51 +71,41 @@ const CreateService = ({ token, setServiceLength, setData }) => {
   };
 
   return (
-    <div className="mb-10">
-      <form action="" className="mt-10" onSubmit={handleSubmit}>
-        <ServiceIcon data={{ icon, setIcon }} />
+    <div id="create-service" className="mb-10" onSubmit={handleSubmit}>
+      <form action="" className="mt-10">
+        <PortfolioThumbnail data={{ thumb, setThumb }} />
+
         <div className="input-form-group mb-8 w-[100%] md:w-[550px]">
           <label htmlFor="input" className="font-medium pl-1">
-            Service Title :
+            Portfolio Name :
           </label>
           <div className="flex items-center gap-2">
             <input
               type="text"
-              placeholder="Enter Service Title"
-              className="p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter Your Name"
+              className="p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900 file:rounded-xl file:border-0 file:p-1 file:px-2 file:ring-2"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
             />
-            <FontAwesomeIcon
-              icon="fa-solid fa-circle-info"
-              className="text-xl cursor-pointer"
-            />
-          </div>
-          <div className="info text-xs text-zinc-400">
-            <p>
-              This Titile will show on your service Title field. so fill it.
-            </p>
           </div>
         </div>
 
-        <div className="input-form-group mb-4 w-[100%] md:w-[550px]">
+        <div className="input-form-group mb-8 w-[100%] md:w-[550px]">
           <label htmlFor="input" className="font-medium pl-1">
-            Service Description :
+            Portfolio Description :
           </label>
           <div className="flex items-center gap-2">
             <textarea
               type="text"
-              placeholder="Enter Your Service Description"
+              placeholder="Enter Your Portfolio Description"
               className="p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900"
               rows="4"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              required
             ></textarea>
-            <FontAwesomeIcon
-              icon="fa-solid fa-circle-info"
-              className="text-xl cursor-pointer"
-            />
+            <i className="fa-solid fa-circle-info text-xl cursor-pointer"></i>
           </div>
           {error ? (
             <div className="info text-xs text-zinc-400">
@@ -124,12 +114,13 @@ const CreateService = ({ token, setServiceLength, setData }) => {
           ) : (
             <div className="info text-xs text-zinc-400">
               <p>
-                This Description will show on your service Description field. so
-                fill it by minimum 50 characters.
+                This Description will show on your portfolio Description field.
+                so fill it by minimum 200 characters.
               </p>
             </div>
           )}
         </div>
+
         <button
           className="p-4 px-6 border border-white rounded-xl bg-blue-700 text-white font-medium col-span-2"
           type="submit"
@@ -153,11 +144,11 @@ const CreateService = ({ token, setServiceLength, setData }) => {
             </svg>
           )}
 
-          <span>Create Service</span>
+          <span>Create Portfolio</span>
         </button>
       </form>
     </div>
   );
 };
 
-export default CreateService;
+export default CreatePorfolio;
