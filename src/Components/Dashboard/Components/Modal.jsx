@@ -84,7 +84,7 @@ export default function LogoController({ data, uploadFunction }) {
               </button>
 
               <button
-                className="px-4 py-2 bg-blue-700 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                className="px-4 py-2 bg-blue-700 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 flex"
                 onClick={onUploadImage}
                 disabled={loading}
               >

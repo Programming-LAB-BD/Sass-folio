@@ -21,7 +21,7 @@ export default function PortfolioItem({
               <img src={image_src} alt={name} />
             </div>
 
-            <div className="service_heading text-2xl font-medium text-center">
+            <div className="service_heading text-2xl font-medium text-center md:mt-10">
               <h2 className="inline-block px-2">{name}</h2>
             </div>
 

@@ -85,6 +85,18 @@ export default function DashboardPage({ stateUpdateFunction, token }) {
       return;
     }
 
+    setTitle((prev) => ({
+      ...prev,
+      info: "",
+      forSubmit: true,
+    }));
+
+    setDescription((prev) => ({
+      ...prev,
+      info: "",
+      forSubmit: true,
+    }));
+
     setLoading(true);
     try {
       let newData = await axios.post(

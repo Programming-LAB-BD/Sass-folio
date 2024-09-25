@@ -33,7 +33,22 @@ export default function AboutPage({ stateUpdateFunction, token }) {
 
       setResult(data.data);
       setAbout((prev) => stateUpdateFunction(prev, data.data.aboutText));
-      setSkillLength(data.data.skills);
+
+      if (data.data.skills.length === 0) {
+        if (skillLength.length === 0) {
+          setSkillLength((prev) => [
+            ...prev,
+            {
+              key: uuidv4(),
+              name: "",
+              progress: 0,
+            },
+          ]);
+        }
+      } else {
+        setSkillLength(data.data.skills);
+      }
+
       setSkillSubmit(false);
     }
 

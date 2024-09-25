@@ -1,10 +1,12 @@
-import { useRef } from "react";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const childrenRef = useRef();
+  const navigate = useNavigate();
 
-  const handleOpenChildren = () => {
-    childrenRef.current.classList.toggle("hidden");
+  const handleLogout = () => {
+    Cookies.remove("saas-folio");
+    navigate("/");
   };
 
   return (
@@ -13,29 +15,10 @@ export default function Header() {
         <div className="text-xl md:text-3xl">Logo.</div>
         <div className="nav">
           <div
-            className="rounded-full w-[35px] h-[35px] bg-secondary dark:bg-dark_secondary text-primary dark:text-dark_primary flex items-center justify-center relative cursor-pointer"
-            onClick={handleOpenChildren}
+            className="rounded-full px-8 py-2 bg-secondary dark:bg-dark_secondary text-primary dark:text-dark_primary flex items-center justify-center relative cursor-pointer text-sm md:text-2xl font-semibold"
+            onClick={handleLogout}
           >
-            pic
-            <div
-              className="w-[200px] absolute bg-secondary dark:bg-dark_secondary top-12 -right-2 rounded-lg hidden drop-shadow-xl after:w-4 after:h-4 after:bg-secondary dark:after:bg-dark_secondary after:absolute after:-top-2 after:right-4 after:rotate-45 transition-all duration-300"
-              ref={childrenRef}
-            >
-              <ul className="p-4">
-                <li className="py-1 px-2 rounded-md my-1 bg-white text-gray-900">
-                  <a href="#">Home</a>
-                </li>
-                <li className="py-1 px-2 rounded-md my-1 bg-white text-gray-900">
-                  <a href="#">About</a>
-                </li>
-                <li className="py-1 px-2 rounded-md my-1 bg-white text-gray-900">
-                  <a href="#">Service</a>
-                </li>
-                <li className="py-1 px-2 rounded-md my-1 bg-white text-gray-900">
-                  <a href="#">Contact</a>
-                </li>
-              </ul>
-            </div>
+            Logout
           </div>
         </div>
       </nav>

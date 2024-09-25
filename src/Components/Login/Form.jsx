@@ -1,3 +1,4 @@
+import axios from "axios";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -22,21 +23,14 @@ export default function Form() {
         password,
       };
 
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
+      let data = await axios.post(
+        `${import.meta.env.REACT_APP_BACKEND_URI}/user/login`,
+        obj
+      );
 
-      let req = new Request("http://localhost:3000/user/login", {
-        method: "POST",
-        body: JSON.stringify(obj),
-        headers,
-      });
-
-      let response = await fetch(req);
-      let data = await response.json();
-
-      if (data.message === "Login successfully.") {
-        Cookies.set("saas-folio", data.jwtToken, {
-          expires: 1,
+      if (data.data.message === "Login successfully.") {
+        Cookies.set("saas-folio", data.data.jwtToken, {
+          expires: 7,
         });
 
         setSubmit(false);
@@ -45,10 +39,10 @@ export default function Form() {
         return;
       }
 
-      if (data.message === "Wrong email or password.") {
-        toast(data.message, {
+      if (data.data.message === "Wrong email or password.") {
+        toast(data.data.message, {
           position: "top-center",
-          autoClose: 5000,
+          autoClose: 8000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -66,7 +60,7 @@ export default function Form() {
 
   return (
     <>
-      <ToastContainer autoClose={8000} />
+      <ToastContainer />
       <section className="w-full h-[92.6vh] md:h-[91.3vh]">
         <div className="w-10/12 h-full mx-auto flex items-center justify-center">
           <div className="border-2 w-full border-primary dark:border-dark_primary rounded-lg bg-[#33333346] lg:w-4/12">

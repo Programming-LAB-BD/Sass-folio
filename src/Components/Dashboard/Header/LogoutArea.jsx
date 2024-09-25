@@ -5,11 +5,12 @@ import { useNavigate } from "react-router-dom";
 import DSIPContext from "../../../Contexts/DashboardSidebarIsOpenContext";
 
 export default function LogoutArea() {
-  const { isOpen } = useContext(DSIPContext);
+  const { isOpen, setMdIsOpen } = useContext(DSIPContext);
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    setMdIsOpen(false);
     Cookies.remove("saas-folio");
     navigate("/");
   };
@@ -26,7 +27,7 @@ export default function LogoutArea() {
             icon="fa-solid fa-circle-user"
             className="text-xl mr-1"
           />
-          <span className={`${!isOpen && "hidden"}`}>Logout</span>
+          <span className={`${!isOpen && "md:hidden"}`}>Logout</span>
         </a>
       </div>
     </div>

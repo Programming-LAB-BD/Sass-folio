@@ -4,7 +4,7 @@ const LoadingItem = () => {
       <div className="h-full overflow-hidden">
         <div className="mt-2">
           <h1 className="w-full mx-auto mb-4 h-8 animate-pulse bg-gray-500"></h1>
-          <div className="lg:h-48 bg-gray-400 md:h-36 w-full object-cover object-center"></div>
+          <div className="h-36 lg:h-48 bg-gray-400 w-full object-cover object-center"></div>
           <div className="text mt-6">
             <p className="leading-relaxed mb-3 w-full mx-auto h-3 animate-pulse bg-gray-400"></p>
             <p className="leading-relaxed mb-3 w-2/3 mx-auto h-3 animate-pulse bg-gray-400"></p>

@@ -28,12 +28,6 @@ export default function DashboardComponent() {
     };
   }
 
-  //TODO: these will be change
-  // useEffect(() => {
-  //   console.log(isOpen);
-  //   console.log(mdIsOpen);
-  // }, [isOpen, mdIsOpen]);
-
   return (
     <>
       <DSIPContext.Provider

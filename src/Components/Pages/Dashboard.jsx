@@ -1,3 +1,4 @@
+import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
@@ -10,23 +11,14 @@ export default function Dashboard() {
 
   useEffect(() => {
     const findProfileFunctionality = async () => {
-      let obj = {
-        token,
-      };
+      let data = await axios.post(
+        `${import.meta.env.REACT_APP_BACKEND_URI}/api/find/profile`,
+        {
+          token,
+        }
+      );
 
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-
-      let req = new Request("http://localhost:3000/api/find/profile", {
-        method: "POST",
-        body: JSON.stringify(obj),
-        headers,
-      });
-
-      let response = await fetch(req);
-      let data = await response.json();
-
-      if (data.profile) {
+      if (data.data.profile) {
         setProfile(<DashboardComponent />);
       } else {
         setProfile(<Navigate to="/profile/" />);
