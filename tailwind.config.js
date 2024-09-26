@@ -12,14 +12,14 @@ export default {
         // "...": "..."
       },
       colors: {
-        primary: "#e5e7eb",
+        primary: "#111827",
         primary_transparent: "#11182794",
         text_primary: "#ffffff",
-        text_secondary: "#2d3436",
-        input_primary: "#b92e58",
-        full_screen_shadow: "#e5e7ebb3",
-        secondary: "#fc427b",
-        hover_secondary: "#f8618e",
+        text_secondary: "#ffffff",
+        input_primary: "#1c849e",
+        full_screen_shadow: "#111827b3",
+        secondary: "#0891b2",
+        hover_secondary: "#067793",
 
         // Dark mode theme here
         dark_primary: "#111827",
@@ -35,3 +35,12 @@ export default {
   },
   plugins: [],
 };
+
+// primary: "#e5e7eb",
+// primary_transparent: "#11182794",
+// text_primary: "#ffffff",
+// text_secondary: "#2d3436",
+// input_primary: "#b92e58",
+// full_screen_shadow: "#e5e7ebb3",
+// secondary: "#fc427b",
+// hover_secondary: "#f8618e",
