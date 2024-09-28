@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LogoController from "../Components/LogoController";
 
-export default function DashboardPage({ stateUpdateFunction, token }) {
+export default function DashboardPage({ stateUpdateFunction, token, profile }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState({});
   const [name, setName] = useState({
@@ -24,6 +24,8 @@ export default function DashboardPage({ stateUpdateFunction, token }) {
     forSubmit: false,
     formStatus: false,
   });
+
+  const linkRef = useRef(null);
 
   // Main UseEffect Function here
   useEffect(() => {
@@ -154,11 +156,42 @@ export default function DashboardPage({ stateUpdateFunction, token }) {
     }));
   };
 
+  const handleCopy = () => {
+    // Select the text field
+    linkRef.current.select();
+    linkRef.current.setSelectionRange(0, 99999); // For mobile devices
+
+    // Copy the text inside the text field
+    navigator.clipboard.writeText(linkRef.current.value);
+  };
+
   return (
     <section id="dashboard">
       <div className="heading_area text-2xl font-medium text-center block w-full md:text-3xl">
         <h1>Welcome to Sass-folio Dashboard.</h1>
       </div>
+
+      <div className="input-form-group mb-16 mt-6 w-[60%] md:w-[450px]">
+        <label htmlFor="input" className="font-medium pl-1">
+          Copy site address:
+        </label>
+        <div className="flex items-center gap-2 mt-1 relative">
+          <input
+            type="text"
+            className={`p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900`}
+            value={`https://saas-folio.netlify.app/${profile.username}`}
+            ref={linkRef}
+            disabled
+          />
+          <button
+            className="absolute top-0 end-0 p-2.5 px-3 h-full text-sm font-medium rounded-e border border-black bg-[#c7ebee] hover:bg-[#a8e8ee]"
+            onClick={handleCopy}
+          >
+            <FontAwesomeIcon icon="fa-solid fa-copy" />
+          </button>
+        </div>
+      </div>
+
       <form className="mt-10">
         <LogoController />
         <div className="input-form-group mb-8 w-[60%] md:w-[450px]">

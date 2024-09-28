@@ -19,7 +19,7 @@ export default function Dashboard() {
       );
 
       if (data.data.profile) {
-        setProfile(<DashboardComponent />);
+        setProfile(<DashboardComponent profile={data.data.profile} />);
       } else {
         setProfile(<Navigate to="/profile/" />);
       }

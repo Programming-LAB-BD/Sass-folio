@@ -14,7 +14,7 @@ export default function Navigations({ navitems }) {
   };
 
   return (
-    <div id="nav_area" className="md:pt-12">
+    <div id="nav_area" className="">
       <ul className="flex flex-col gap-1">
         {items.map((item, index) => (
           <li

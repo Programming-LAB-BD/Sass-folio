@@ -11,7 +11,7 @@ import HomePage from "./Pages/HomePage";
 import PortfolioPage from "./Pages/PortfolioPage";
 import ServicePage from "./Pages/ServicePage";
 
-export default function DashboardComponent() {
+export default function DashboardComponent({ profile }) {
   const [position, setPosition] = useState("dashboard");
   const [isOpen, setIsOpen] = useState(true); // is open mean it is work in learge devices
   const [mdIsOpen, setMdIsOpen] = useState(false); // md is open mean it is work in small devices and there is some wrong in the naming convention
@@ -39,7 +39,11 @@ export default function DashboardComponent() {
 
         <DashboardContainer isOpen={isOpen}>
           {position.toLowerCase() === "dashboard" && (
-            <DashboardPage stateUpdateFunction={SSUWGRFB} token={token} />
+            <DashboardPage
+              stateUpdateFunction={SSUWGRFB}
+              token={token}
+              profile={profile}
+            />
           )}
           {position.toLowerCase() === "home" && (
             <HomePage stateUpdateFunction={SSUWGRFB} token={token} />

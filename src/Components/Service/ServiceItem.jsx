@@ -1,6 +1,10 @@
+import { useState } from "react";
 import LoadingItem from "../Loading/LoadingItem";
+import PreviewModal from "../Modal/PreviewModal";
 
 export default function ServiceItem({ name, icon, text, index, loading }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       {loading ? (
@@ -29,11 +33,18 @@ export default function ServiceItem({ name, icon, text, index, loading }) {
                   ? text.split(" ").slice(0, 25).join(" ") + "....."
                   : text}
               </p>
-              <button className="px-6 py-[12px] bg-secondary dark:bg-dark_secondary rounded-md text-primary dark:text-dark_primary font-medium hover:bg-hover_secondary dark:hover:bg-dark_hover_secondary">
+              <button
+                className="px-6 py-[12px] bg-secondary dark:bg-dark_secondary rounded-md text-primary dark:text-dark_primary font-medium hover:bg-hover_secondary dark:hover:bg-dark_hover_secondary"
+                onClick={() => setIsOpen(true)}
+              >
                 Read More &gt;
               </button>
             </div>
           </div>
+
+          <PreviewModal
+            data={{ isOpen, setIsOpen, name, image_src: icon, text }}
+          />
         </div>
       )}
     </>
