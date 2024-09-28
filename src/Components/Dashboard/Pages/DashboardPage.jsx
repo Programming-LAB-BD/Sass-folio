@@ -179,7 +179,7 @@ export default function DashboardPage({ stateUpdateFunction, token, profile }) {
           <input
             type="text"
             className={`p-2 border rounded w-full border-gray-900 bg-[#c7ebee] text-gray-900`}
-            value={`https://saas-folio.netlify.app/${profile.username}`}
+            value={`https://saas-folio.netlify.app/${profile.username}/`}
             ref={linkRef}
             disabled
           />
